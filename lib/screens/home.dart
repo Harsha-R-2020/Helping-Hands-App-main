@@ -13,6 +13,7 @@ import 'Mapscreen.dart';
 
 import 'addDonor.dart';
 import 'loginScreen.dart';
+import 'managedonation.dart';
 
 class MyCustomUI extends StatefulWidget {
   @override
@@ -82,23 +83,10 @@ class _MyCustomUIState extends State<MyCustomUI> with TickerProviderStateMixin {
 
               card('Find Items', 'Nothing makes one feel so strong as a call for help', Icons.search_outlined,
                   FindItems()),
-              // card('Find Items', 'Nothing makes one feel so strong as a call for help', Icons.search_outlined,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
-              // card('Example example example', 'Example', Icons.favorite,
-              //     RouteWhereYouGo()),
+              card('Manage Donation', 'Always give without remembering and always receive without forgetting', Icons.manage_history_outlined,
+                  ManageDonation()),
             ],
+
           ),
         ],
       ),
@@ -113,7 +101,7 @@ class _MyCustomUIState extends State<MyCustomUI> with TickerProviderStateMixin {
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         child: AppBar(
           brightness: Brightness.light,
-          backgroundColor: Colors.tealAccent.withOpacity(.7),
+          backgroundColor: AppColor.orange,
           elevation: 0,
           title: Text(
             ' Helping Hands',
@@ -203,10 +191,10 @@ class _MyCustomUIState extends State<MyCustomUI> with TickerProviderStateMixin {
                             maxLines: 2,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.left,
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: _w / 20,
+                              color: Colors.tealAccent,
+                              fontSize: _w / 15,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1,
                               wordSpacing: 1,

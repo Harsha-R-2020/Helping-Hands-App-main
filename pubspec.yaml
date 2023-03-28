@@ -41,6 +41,9 @@ dependencies:
   flutter_geocoder: ^0.2.2-nullsafety
   google_maps_flutter_web: ^0.4.0+7
   cloud_firestore: ^4.4.4
+  url_launcher: ^6.1.10
+  animated_text_kit: ^4.2.2
+  avatar_glow: ^2.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

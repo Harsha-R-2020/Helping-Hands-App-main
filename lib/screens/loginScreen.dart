@@ -10,6 +10,7 @@ import '../screens/signUpScreen.dart';
 import '../utils/helper.dart';
 import '../widgets/customTextInput.dart';
 import 'home.dart';
+import 'FindItems.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -18,7 +19,9 @@ class LoginScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: ()=>_back(context),
+    child: Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor:Colors.black87,
       body: Container(
@@ -107,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                             password: passwordController.text
                         );
                         if(credential != null){
-                          print('Login Successfull');
+                          print('Login Successfull $credential');
                           Fluttertoast.showToast(
                               msg: 'Login Successfull',
                               toastLength: Toast.LENGTH_SHORT,
@@ -116,7 +119,11 @@ class LoginScreen extends StatelessWidget {
                               backgroundColor:  AppColor.orange,
                               textColor: Colors.black
                           );
-                          Navigator.push(context,MaterialPageRoute(builder: (context) =>MyCustomUI()));
+                          if(emailController.text == 'hi@gmail.com') {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => FindItems()));
+                          }else{
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => MyCustomUI()));}
                           // Navigator.of(context)
                           //     .pushReplacementNamed(HomeScreen.routeName);
                         }
@@ -129,17 +136,37 @@ class LoginScreen extends StatelessWidget {
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
 
-                              backgroundColor:  AppColor.orange,
+                              backgroundColor:  Colors.red,
                               textColor: Colors.black
                           );
-                        } else if (e.code == 'wrong-password') {
+                        } else if (e.code == 'invalid-email'){
+                          Fluttertoast.showToast(
+                              msg: 'The Email address is badly formatted.',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+
+                              backgroundColor:  Colors.red,
+                              textColor: Colors.black
+                          );
+                        }
+                        else if (e.code == 'unknown'){
+                          Fluttertoast.showToast(
+                              msg: 'All Fields are Mandatory.',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+
+                              backgroundColor:  Colors.red,
+                              textColor: Colors.black
+                          );
+                        }
+                        else if (e.code == 'wrong-password') {
                           print('Wrong password provided for that user.');
                           Fluttertoast.showToast(
                               msg: 'Wrong password provided for that user.',
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
 
-                              backgroundColor:  AppColor.orange,
+                              backgroundColor:  Colors.red,
                               textColor: Colors.black
                           );
                         }
@@ -149,7 +176,7 @@ class LoginScreen extends StatelessWidget {
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
 
-                              backgroundColor:  AppColor.orange,
+                              backgroundColor:  Colors.red,
                               textColor: Colors.black
                           );
                         }
@@ -306,6 +333,42 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
+  }
+  Future<bool> _back(BuildContext context) async{
+    bool s = await showDialog(context: context, builder: (BuildContext context){
+      return Container(
+        color:Colors.black.withOpacity(.75) ,
+
+        child: AlertDialog(title: const Text("Do you really want to exit ?",style: TextStyle(
+            color: AppColor.primary,
+            fontWeight: FontWeight.normal,
+            fontSize: 20
+        )),
+
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColor.orange,
+                padding: const EdgeInsets.all(16.0),
+                textStyle: const TextStyle(fontSize: 15),
+              ),
+              onPressed: (){
+                Navigator.of(context).pop(false);
+              }, child: const Text("No"),),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColor.orange,
+                padding: const EdgeInsets.all(16.0),
+                textStyle: const TextStyle(fontSize: 15),
+              ),
+              onPressed: (){
+                // Navigator.of(context).pop(true);
+                SystemNavigator.pop();
+              }, child: const Text("Yes"),),
+          ],),
+      );
+    });
+    return s ?? false;
   }
 }

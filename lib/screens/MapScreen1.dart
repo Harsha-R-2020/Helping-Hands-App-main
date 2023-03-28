@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,15 +8,23 @@ import 'package:monkey_app_demo/const/colors.dart';
 
 import 'loginScreen.dart';
 
-class MapScreen extends StatefulWidget {
-  const MapScreen({Key key}) : super(key: key);
+class MapData {
 
-  @override
-  _MapScreenState createState() => _MapScreenState();
+  double lat,long;
+  MapData({this.lat,this.long});
 }
 
-class _MapScreenState extends State<MapScreen> {
+class MapScreen1 extends StatefulWidget {
+  const MapScreen1({Key key,this.mapdata}) : super(key: key);
+  final MapData mapdata;
+
+  @override
+  _MapScreenState1 createState() => _MapScreenState1();
+}
+
+class _MapScreenState1 extends State<MapScreen1> {
   Completer<GoogleMapController> _controller = Completer();
+
 // on below line we have specified camera position
   static final CameraPosition _kGoogle = const CameraPosition(
     target: LatLng(11.1271, 78.6569),
@@ -25,23 +34,23 @@ class _MapScreenState extends State<MapScreen> {
 // on below line we have created the list of markers
   final List<Marker> _markers = <Marker>[
     // Marker(
-    //     markerId: MarkerId('1'),
-    //     position: LatLng(11.1271, 78.6569),
-    //     infoWindow: InfoWindow(
-    //       title: 'My Position',
-    //     )
+    //     // markerId: MarkerId('1'),
+    //     // position: LatLng(11.1271, 78.6569),
+    //     // infoWindow: InfoWindow(
+    //     //   title: 'Donor Position',
+    //     // )
     // ),
   ];
 
 // created method for getting user current location
-  Future<Position> getUserCurrentLocation() async {
-    await Geolocator.requestPermission().then((value){
-    }).onError((error, stackTrace) async {
-      await Geolocator.requestPermission();
-      print("ERROR"+error.toString());
-    });
-    return await Geolocator.getCurrentPosition();
-  }
+//   Future<Position> getUserCurrentLocation() async {
+//     await Geolocator.requestPermission().then((value){
+//     }).onError((error, stackTrace) async {
+//       await Geolocator.requestPermission();
+//       print("ERROR"+error.toString());
+//     });
+//     return await Geolocator.getCurrentPosition();
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +61,33 @@ class _MapScreenState extends State<MapScreen> {
         backgroundColor: AppColor.orange,
         elevation: 0,
         // on below line we have given title of app
-        title: Text("Mark your Location",style: TextStyle(
+        title: Text("View Donor Location",style: TextStyle(
           fontSize: _w / 17,
           color: Colors.black.withOpacity(.7),
           fontWeight: FontWeight.w400,
         ),),
+        actions: [
+          IconButton(
+            tooltip: 'Sign out',
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            icon: Icon(Icons.arrow_forward_ios, color: Colors.black.withOpacity(.7)),
+            onPressed: () async {
+              HapticFeedback.lightImpact();
+              // await FirebaseAuth.instance.signOut();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LoginScreen();
+                  },
+                ),
+              );
+            },
+          ),
+          Text(' '),
+        ],
       ),
       body: Container(
         child: SafeArea(
@@ -82,23 +113,24 @@ class _MapScreenState extends State<MapScreen> {
       // on pressing floating action button the camera will take to user current location
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async{
-          getUserCurrentLocation().then((value) async {
-            print(value.latitude.toString() +" "+value.longitude.toString());
+            // double lat = , long = ;
+            print(widget.mapdata.lat);
+            print(widget.mapdata.long);
 
             // marker added for current users location
             _markers.add(
                 Marker(
                   markerId: MarkerId("2"),
-                  position: LatLng(value.latitude, value.longitude),
+                  position: LatLng(widget.mapdata.lat ,widget.mapdata.long ),
                   infoWindow: InfoWindow(
-                    title: 'My Current Location',
+                    title: 'Donor Location',
                   ),
                 )
             );
 
             // specified current users location
             CameraPosition cameraPosition = new CameraPosition(
-              target: LatLng(value.latitude, value.longitude),
+              target: LatLng(widget.mapdata.lat , widget.mapdata.long),
               zoom: 17,
             );
 
@@ -106,9 +138,9 @@ class _MapScreenState extends State<MapScreen> {
             controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
             setState(() {
             });
-          });
+
         },
-        label: Text('Find Your Location'),
+        label: Text('Mark Location'),
         icon: Icon(Icons.location_on_outlined),
 
       ),

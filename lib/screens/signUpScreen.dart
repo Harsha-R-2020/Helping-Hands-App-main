@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../const/colors.dart';
@@ -9,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
+  TextEditingController mnoController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   static const routeName = '/signUpScreen';
   @override
@@ -50,6 +53,48 @@ class SignUpScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 15
                 ),
+              ),
+              Text(
+                "",
+              ),
+              TextField(
+
+                controller: nameController,
+                decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: AppColor.primary), //<-- SEE HERE
+                    ),
+                    filled: true,
+                    fillColor: Colors.black12,
+                    labelText: 'Enter your Name ',
+                    labelStyle: TextStyle(
+                      color: AppColor.placeholder,
+                    )
+
+                ),
+                style: TextStyle(color: AppColor.placeholder),
+              ),
+              Text(
+                "",
+              ),
+              TextField(
+
+                controller: mnoController,
+                decoration: const InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: AppColor.primary), //<-- SEE HERE
+                    ),
+                    filled: true,
+                    fillColor: Colors.black12,
+                    labelText: 'Enter your Mobile Number ',
+                    labelStyle: TextStyle(
+                      color: AppColor.placeholder,
+                    )
+
+                ),
+                style: TextStyle(color: AppColor.placeholder),
               ),
               Text(
                 "",
@@ -112,18 +157,41 @@ class SignUpScreen extends StatelessWidget {
                         email: emailController.text,
                         password: passwordController.text,
                       );
+
                       if (credential != null) {
                         // Navigator.pushNamed(context, 'home_screen');
                         // print('Login Successfull');
-                        Navigator.push(context,MaterialPageRoute(builder: (context) =>LoginScreen()));
-                        Fluttertoast.showToast(
-                            msg: 'The account Created Successfully',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
+                        try {
+                          var status = FirebaseFirestore.instance
+                              .collection('UserInfo')
+                              .add({'Name': nameController.text,
+                            'MobileNumber': mnoController.text,
+                            'email': emailController.text,
+                          });
+                          if(status!=Null){
+                            Fluttertoast.showToast(
+                                msg: 'The account Created Successfully',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
 
-                            backgroundColor:  AppColor.orange,
-                            textColor: Colors.black
-                        );
+                                backgroundColor:  AppColor.orange,
+                                textColor: Colors.black
+                            );
+                            Navigator.push(context,MaterialPageRoute(builder: (context) =>LoginScreen()));
+                          }
+
+                        } catch (e) {
+                          HapticFeedback.heavyImpact();
+                          print(e);
+                          Fluttertoast.showToast(
+                              msg: e.toString(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor:  AppColor.orange,
+                              textColor: Colors.black
+                          );
+                        }
+
                       }
                     } on FirebaseAuthException catch (e) {
                       HapticFeedback.heavyImpact();
@@ -164,7 +232,6 @@ class SignUpScreen extends StatelessWidget {
                           msg: e.toString(),
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
-
                           backgroundColor:  AppColor.orange,
                           textColor: Colors.black
                       );

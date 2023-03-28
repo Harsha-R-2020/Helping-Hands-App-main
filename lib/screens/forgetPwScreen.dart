@@ -23,36 +23,63 @@ class ForgetPwScreen extends StatelessWidget {
         )
     );
     return Scaffold(
+
+      backgroundColor:Colors.black87,
       body: Container(
         width: Helper.getScreenWidth(context),
-        height: Helper.getScreenWidth(context),
+        height: Helper.getScreenHeight(context),
         child: SafeArea(
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 40,
-              vertical: 30,
+              vertical: 10,
             ),
+
             child: Column(
               children: [
+                Spacer(flex: 1,),
                 Text(
                   "Reset Password",
-                  style: Helper.getTheme(context).headline6,
+                  // style: Helper.getTheme(context).headline6,
+                  style: TextStyle(
+                      color: AppColor.orange,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30
+                  ),
                 ),
-                Spacer(),
+                Text(""),
+                // Spacer(),
                 Text(
                   "Please enter your email to recieve a link to create a new password via email",
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColor.secondary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15
+                  ),
                 ),
-                Spacer(flex: 2),
+                // Spacer(flex: 1),
+                Text(""),
               TextField(
 
                 controller: emailController,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Your Email',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: AppColor.primary), //<-- SEE HERE
+                    ),
+                    filled: true,
+                    fillColor: Colors.black12,
+                    labelText: 'Enter your Email ',
+                    labelStyle: TextStyle(
+                      color: AppColor.placeholder,
+                    )
+
                 ),
+                style: TextStyle(color: AppColor.placeholder),
               ),
-                Spacer(),
+                Text(""),
+                // Spacer(),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -87,7 +114,8 @@ class ForgetPwScreen extends StatelessWidget {
                     },
                     child: Text("Send"),
                   ),
-                )
+                ),
+                Spacer(),
               ],
             ),
           ),
