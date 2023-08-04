@@ -14,6 +14,8 @@ leveraging the power of technology to connect individuals in need with those
 who are willing to help. By facilitating community support and fostering a
 culture of kindness and generosity, the app has the potential to make a
 significant impact on the lives of countless individuals.
+# Demo Video
+https://youtu.be/AM-qfPp_1Hk 
 # Screen Shots
 ![Screenshot_2023-04-02-07-28-48-05_f0fc5afe10149c4996127b659278d23f](https://user-images.githubusercontent.com/74779796/235368135-09bbfc89-9eb4-4aba-b5ca-c8efe09adba8.jpg)
 ![Screenshot_2023-04-02-07-28-53-41_f0fc5afe10149c4996127b659278d23f](https://user-images.githubusercontent.com/74779796/235368136-ce8bf8b0-778c-4db4-9f71-cf2016936e91.jpg)
